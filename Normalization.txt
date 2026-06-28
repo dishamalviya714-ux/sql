@@ -1,0 +1,145 @@
+Normalization
+1. | Member_Id | First_Name | Last_Name | Hobbies                     |
+| --------- | ---------- | --------- | --------------------------- |
+| 101       | Jayson     | Mark      | Cricket, Swimming, Football |
+| 102       | Ram        | Ganesh    | Swimming, Running, Music    |
+| 103       | Raj        | Kishore   | Dancing, Singing, Running   |
+
+CREATE TABLE Member (
+    Member_Id NUMBER,
+    First_Name VARCHAR2(20),
+    Last_Name VARCHAR2(20),
+    Hobbies VARCHAR2(100)
+);
+
+INSERT INTO Member VALUES (101, 'Jayson', 'Mark', 'Cricket,Swimming,Football');
+INSERT INTO Member VALUES (102, 'Ram', 'Ganesh', 'Swimming,Running,Music');
+INSERT INTO Member VALUES (103, 'Raj', 'Kishore', 'Dancing,Singing,Running');
+
+COMMIT;
+
+CREATE TABLE Member_1NF (
+    Member_Id NUMBER,
+    First_Name VARCHAR2(20),
+    Last_Name VARCHAR2(20),
+    Hobby VARCHAR2(30),
+    PRIMARY KEY (Member_Id, Hobby)
+);
+
+INSERT INTO Member_1NF VALUES (101, 'Jayson', 'Mark', 'Cricket');
+INSERT INTO Member_1NF VALUES (101, 'Jayson', 'Mark', 'Swimming');
+INSERT INTO Member_1NF VALUES (101, 'Jayson', 'Mark', 'Football');
+
+INSERT INTO Member_1NF VALUES (102, 'Ram', 'Ganesh', 'Swimming');
+INSERT INTO Member_1NF VALUES (102, 'Ram', 'Ganesh', 'Running');
+INSERT INTO Member_1NF VALUES (102, 'Ram', 'Ganesh', 'Music');
+
+INSERT INTO Member_1NF VALUES (103, 'Raj', 'Kishore', 'Dancing');
+INSERT INTO Member_1NF VALUES (103, 'Raj', 'Kishore', 'Singing');
+INSERT INTO Member_1NF VALUES (103, 'Raj', 'Kishore', 'Running');
+
+COMMIT;
+
+SELECT * FROM Member_1NF;
+
+MEMBER_ID FIRST_NAME LAST_NAME HOBBY
+--------- ---------- --------- ----------
+101       Jayson     Mark      Cricket
+101       Jayson     Mark      Swimming
+101       Jayson     Mark      Football
+102       Ram        Ganesh    Swimming
+102       Ram        Ganesh    Running
+102       Ram        Ganesh    Music
+103       Raj        Kishore   Dancing
+103       Raj        Kishore   Singing
+103       Raj        Kishore   Running
+
+2.| Empno | Training   | Training_Date | Dept |
+| ----- | ---------- | ------------- | ---- |
+| 101   | Oracle SQL | 12-Aug-2015   | TT   |
+| 101   | Java       | 21-Aug-2015   | BU   |
+| 102   | Oracle SQL | 18-Sep-2014   | TT   |
+
+CREATE TABLE Employee_Training (
+    Empno NUMBER,
+    Training VARCHAR2(30),
+    Training_Date DATE,
+    PRIMARY KEY (Empno, Training)
+);
+
+INSERT INTO Employee_Training VALUES (101, 'Oracle SQL', TO_DATE('12-Aug-2015','DD-MON-YYYY'));
+INSERT INTO Employee_Training VALUES (101, 'Java', TO_DATE('21-Aug-2015','DD-MON-YYYY'));
+INSERT INTO Employee_Training VALUES (102, 'Oracle SQL', TO_DATE('18-Sep-2014','DD-MON-YYYY'));
+
+COMMIT;
+
+CREATE TABLE Training_Department (
+    Training VARCHAR2(30) PRIMARY KEY,
+    Dept VARCHAR2(10)
+);
+
+INSERT INTO Training_Department VALUES ('Oracle SQL', 'TT');
+INSERT INTO Training_Department VALUES ('Java', 'BU');
+
+COMMIT;
+
+SELECT * FROM Employee_Training;
+
+| Empno | Training   | Training_Date |
+| ----- | ---------- | ------------- |
+| 101   | Oracle SQL | 12-AUG-15     |
+| 101   | Java       | 21-AUG-15     |
+| 102   | Oracle SQL | 18-SEP-14     |
+
+SELECT * FROM Training_Department;
+
+| Training   | Dept |
+| ---------- | ---- |
+| Oracle SQL | TT   |
+| Java       | BU   |
+
+3. | Member_Id | First_Name | Last_Name | Sports   | Fees |
+| --------- | ---------- | --------- | -------- | ---- |
+| 101       | Rajesh     | Chand     | Cricket  | 100  |
+| 102       | Jayesh     | Raj       | Hockey   | 80   |
+| 103       | Mark       | Dorson    | Football | 90   |
+
+CREATE TABLE Member (
+    Member_Id NUMBER PRIMARY KEY,
+    First_Name VARCHAR2(20),
+    Last_Name VARCHAR2(20),
+    Sports VARCHAR2(20)
+);
+
+INSERT INTO Member VALUES (101, 'Rajesh', 'Chand', 'Cricket');
+INSERT INTO Member VALUES (102, 'Jayesh', 'Raj', 'Hockey');
+INSERT INTO Member VALUES (103, 'Mark', 'Dorson', 'Football');
+
+COMMIT;
+
+CREATE TABLE Sports_Fees (
+    Sports VARCHAR2(20) PRIMARY KEY,
+    Fees NUMBER
+);
+
+INSERT INTO Sports_Fees VALUES ('Cricket', 100);
+INSERT INTO Sports_Fees VALUES ('Hockey', 80);
+INSERT INTO Sports_Fees VALUES ('Football', 90);
+
+COMMIT;
+
+SELECT * FROM Member;
+
+| Member_Id | First_Name | Last_Name | Sports   |
+| --------- | ---------- | --------- | -------- |
+| 101       | Rajesh     | Chand     | Cricket  |
+| 102       | Jayesh     | Raj       | Hockey   |
+| 103       | Mark       | Dorson    | Football |
+
+SELECT * FROM Sports_Fees;
+
+| Sports   | Fees |
+| -------- | ---- |
+| Cricket  | 100  |
+| Hockey   | 80   |
+| Football | 90   |
